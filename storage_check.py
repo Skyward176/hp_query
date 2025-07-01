@@ -102,6 +102,8 @@ def get_product_specs(serial, session, driver):
 def worker(queue, lock, writer, headers_list):
     session = requests.Session()
     chrome_opts = Options()
+    #chrome_opts.add_argument("--headless")
+    #chrome_opts.add_argument("--disable-gpu")
     driver = webdriver.Chrome(options=chrome_opts)
 
     while True:
@@ -150,11 +152,11 @@ def main(input_path, output_path):
 
     threads = []
     
-    for _ in range(1):
+    for _ in range(4):
         t = threading.Thread(target = worker, args =(work_queue, lock, writer, spec_titles))
         t.start()
         threads.append(t)
-        time.sleep(2)
+        time.sleep(3)
     work_queue.join()
 
     for t in threads:
@@ -164,7 +166,7 @@ def main(input_path, output_path):
 if __name__ == '__main__':
     import sys
     if len(sys.argv) != 3:
-        print("Usage: python hp_warranty_storage.py <serials.csv> <output.csv>")
+        print("Usage: python hp_warranty_storage.py <serials.csv> <output.csv>")(By.ID, "Viewfull")
         sys.exit(1)
     main(sys.argv[1], sys.argv[2])
 
